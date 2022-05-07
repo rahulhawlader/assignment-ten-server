@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const { MongoClient, ServerApiVersion, ObjectId, ObjectID } = require('mongodb');
 const { listen } = require('express/lib/application');
+// const jwt = require('jsonwebtoken');
 const { query } = require('express');
 require('dotenv').config();
 const port = process.env.PORT || 5000;
@@ -21,8 +22,14 @@ async function run() {
     try {
         await client.connect();
         const dressCollection = client.db('fasionHouse').collection('dress');
-        // const itemCollection = client.db('fasionHouse').collection('item')
 
+        // app.post('/login', async (res, req) => {
+        //     const user = req.body;
+        //     const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
+        //         expiresIn: '1d'
+        //     })
+        //     res.send({ accessToken })
+        // })
 
         app.get('/dress', async (req, res) => {
             const query = {};
