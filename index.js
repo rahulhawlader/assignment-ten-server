@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const { MongoClient, ServerApiVersion, ObjectId, ObjectID } = require('mongodb');
 const { listen } = require('express/lib/application');
+const { query } = require('express');
 require('dotenv').config();
 const port = process.env.PORT || 5000;
 const app = express();
@@ -20,6 +21,8 @@ async function run() {
     try {
         await client.connect();
         const dressCollection = client.db('fasionHouse').collection('dress');
+        // const itemCollection = client.db('fasionHouse').collection('item')
+
 
         app.get('/dress', async (req, res) => {
             const query = {};
@@ -36,6 +39,23 @@ async function run() {
             res.send(dress);
         })
 
+
+        /////////////////////////////////////////////////////////////////////
+        app.get('/item', async (req, res) => {
+            const email = req.query.email
+            const query = { email }
+            const curser = dressCollection.find(query);
+            const rest = await curser.toArray();
+            res.send(rest)
+
+
+        })
+
+
+
+
+
+        ////////////////////////////////////////////////////////////////
         app.put('/dress/:id', async (req, res) => {
             const id = req.params.id;
             const newQuantity = req.body;
@@ -67,6 +87,8 @@ async function run() {
             const result = await dressCollection.deleteOne(query);
             res.send(result)
         })
+
+
     }
     finally {
 
